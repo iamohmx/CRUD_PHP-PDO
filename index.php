@@ -1,6 +1,6 @@
 <?php
 require_once 'viewProducts.php';
-
+// var_dump($limit_start);
 ?>
 
 <!doctype html>
@@ -64,7 +64,7 @@ require_once 'viewProducts.php';
         </div>
         <h2 class="text-center">Products</h2>
         <div class="row justify-content-center">
-            <div class="col-lg-8 ">
+            <div class="col-lg-12 ">
                 <table class="table table-striped table-secondary">
                     <thead>
                         <tr>
@@ -77,111 +77,216 @@ require_once 'viewProducts.php';
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                         <?php
-                            if (!empty($result)) {
-                                foreach ($result as $row) :
-                                    ?>
-                                    <tr>
-                                        <th scope="row"><?php echo $row['id']; ?></th>
-                                        <td><?php echo $row['p_name']; ?></td>
-                                        <td><?php echo $row['p_desc']; ?></td>
-                                        <td><?php echo number_format($row['p_price'], 2); ?></td>
-                                        <td width="10%">
-                                            <img src="<?php echo $row['p_img']; ?>" class="card-img-top" alt="">
-                                        </td>
-                                        <td>
-                                            <a href="editProduct.php?id=<?php echo $row['id']; ?>" role="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editModalid<?php echo $row['id']; ?>"><i class="bi bi-pencil-square"></i> แก้ไข</a>
-                                            <a href="deleteProduct.php?id=<?php echo $row['id']; ?>" role="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModalid<?php echo $row['id']; ?>"><i class="bi bi-trash3-fill"></i> ลบ</a>
-                                            <!-- add Modal -->
-                                            <div class="modal fade" id="editModalid<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="editLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="ModalLabel"><i class="bi bi-pencil-square"></i> แก้ไขข้อมูลสินค้า</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <!-- Form Here -->
-                                                            <form action="editProduct.php?id=<?php echo $row['id'] ?>" method="post">
-                                                                <div class="mb-3">
-                                                                    <label for="p_name" class="form-label">ชื่อสินค้า</label>
-                                                                    <input type="text" name="p_name" class="form-control" id="p_name" value="<?php echo $row['p_name'] ?>" placeholder="ชื่อสินค้า" required>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="p_price" class="form-label">ราคาสินค้า</label>
-                                                                    <input type="number" name="p_price" class="form-control" id="p_price" value="<?php echo $row['p_price'] ?>" placeholder="ราคาสินค้า" required>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="p_desc" class="form-label">รายละเอียดสินค้า</label>
-                                                                    <textarea class="form-control" name="p_desc" id="p_desc" rows="3" placeholder="รายละเอียดสินค้า" required><?php echo $row['p_desc'] ?></textarea>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="p_img" class="form-label">รูปภาพสินค้า</label>
-                                                                    <input type="text" name="p_img" class="form-control" id="p_img" value="<?php echo $row['p_img'] ?>" placeholder="รูปภาพสินค้า(ใส่เป็นลิงก์)" required>
-                                                                </div>
-                                                                <div class="d-flex justify-content-center">
-                                                                    <input type="hidden" name="id" value="<?php $row['id']; ?>">
-                                                                    <input type="submit" name="editProduct" class="btn btn-info" value="แก้ไขสินค้า">
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        </div>
+                        if (!empty($result)) {
+                            foreach ($result as $row) :
+                        ?>
+                                <tr>
+                                    <th scope="row"><?php echo $row['id']; ?></th>
+                                    <td><?php echo $row['p_name']; ?></td>
+                                    <td><?php echo $row['p_desc']; ?></td>
+                                    <td><?php echo number_format($row['p_price'], 2); ?></td>
+                                    <td width="10%">
+                                        <img src="<?php echo $row['p_img']; ?>" class="card-img-top" alt="">
+                                    </td>
+                                    <td width="20%">
+                                        <a href="editProduct.php?id=<?php echo $row['id']; ?>" role="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editModalid<?php echo $row['id']; ?>"><i class="bi bi-pencil-square"></i> แก้ไข</a>
+                                        <a href="deleteProduct.php?id=<?php echo $row['id']; ?>" role="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModalid<?php echo $row['id']; ?>"><i class="bi bi-trash3-fill"></i> ลบ</a>
+                                        <!-- edit Modal -->
+                                        <div class="modal fade" id="editModalid<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="editLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="ModalLabel"><i class="bi bi-pencil-square"></i> แก้ไขข้อมูลสินค้า</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Form Here -->
+                                                        <form action="editProduct.php?id=<?php echo $row['id'] ?>" method="post">
+                                                            <div class="mb-3">
+                                                                <label for="p_name" class="form-label">ชื่อสินค้า</label>
+                                                                <input type="text" name="p_name" class="form-control" id="p_name" value="<?php echo $row['p_name'] ?>" placeholder="ชื่อสินค้า" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="p_price" class="form-label">ราคาสินค้า</label>
+                                                                <input type="number" name="p_price" class="form-control" id="p_price" value="<?php echo $row['p_price'] ?>" placeholder="ราคาสินค้า" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="p_desc" class="form-label">รายละเอียดสินค้า</label>
+                                                                <textarea class="form-control" name="p_desc" id="p_desc" rows="3" placeholder="รายละเอียดสินค้า" required><?php echo $row['p_desc'] ?></textarea>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="p_img" class="form-label">รูปภาพสินค้า</label>
+                                                                <input type="text" name="p_img" class="form-control" id="p_img" value="<?php echo $row['p_img'] ?>" placeholder="รูปภาพสินค้า(ใส่เป็นลิงก์)" required>
+                                                            </div>
+                                                            <div class="d-flex justify-content-center">
+                                                                <input type="hidden" name="id" value="<?php $row['id']; ?>">
+                                                                <input type="submit" name="editProduct" class="btn btn-info" value="แก้ไขสินค้า">
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <!-- delete Modal -->
-                                            <div class="modal fade" id="deleteModalid<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="deleteLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="ModalLabel"><i class="bi bi-pencil-square"></i> ลบข้อมูลสินค้า</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <!-- Form Here -->
-                                                            <form action="deleteProduct.php?id=<?php echo $row['id'] ?>" method="post">
-                                                                <div class="mb-3">
-                                                                    <label for="p_name" class="form-label">ชื่อสินค้า</label>
-                                                                    <input type="text" name="p_name" class="form-control" id="p_name" value="<?php echo $row['p_name'] ?>" placeholder="ชื่อสินค้า" disabled>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="p_price" class="form-label">ราคาสินค้า</label>
-                                                                    <input type="number" name="p_price" class="form-control" id="p_price" value="<?php echo $row['p_price'] ?>" placeholder="ราคาสินค้า" disabled>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="p_desc" class="form-label">รายละเอียดสินค้า</label>
-                                                                    <textarea class="form-control" name="p_desc" id="p_desc" rows="3" placeholder="รายละเอียดสินค้า" disabled><?php echo $row['p_desc'] ?></textarea>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="p_img" class="form-label">รูปภาพสินค้า</label>
-                                                                    <input type="text" name="p_img" class="form-control" id="p_img" value="<?php echo $row['p_img'] ?>" placeholder="รูปภาพสินค้า(ใส่เป็นลิงก์)" disabled>
-                                                                </div>
-                                                                <div class="d-flex justify-content-center">
-                                                                    <input type="hidden" name="id" value="<?php $row['id']; ?>">
-                                                                    <input type="submit" name="deleteProduct" class="btn btn-danger" value="ลบสินค้า">
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        </div>
+                                        <!-- delete Modal -->
+                                        <div class="modal fade" id="deleteModalid<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="deleteLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="ModalLabel"><i class="bi bi-pencil-square"></i> ลบข้อมูลสินค้า</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Form Here -->
+                                                        <form action="deleteProduct.php?id=<?php echo $row['id'] ?>" method="post">
+                                                            <div class="mb-3">
+                                                                <label for="p_name" class="form-label">ชื่อสินค้า</label>
+                                                                <input type="text" name="p_name" class="form-control" id="p_name" value="<?php echo $row['p_name'] ?>" placeholder="ชื่อสินค้า" disabled>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="p_price" class="form-label">ราคาสินค้า</label>
+                                                                <input type="number" name="p_price" class="form-control" id="p_price" value="<?php echo $row['p_price'] ?>" placeholder="ราคาสินค้า" disabled>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="p_desc" class="form-label">รายละเอียดสินค้า</label>
+                                                                <textarea class="form-control" name="p_desc" id="p_desc" rows="3" placeholder="รายละเอียดสินค้า" disabled><?php echo $row['p_desc'] ?></textarea>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="p_img" class="form-label">รูปภาพสินค้า</label>
+                                                                <input type="text" name="p_img" class="form-control" id="p_img" value="<?php echo $row['p_img'] ?>" placeholder="รูปภาพสินค้า(ใส่เป็นลิงก์)" disabled>
+                                                            </div>
+                                                            <div class="d-flex justify-content-center">
+                                                                <input type="hidden" name="id" value="<?php $row['id']; ?>">
+                                                                <input type="submit" name="deleteProduct" class="btn btn-danger" value="ลบสินค้า">
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
-                                    </tr>
-                            <?php
-                                endforeach;
-                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                        <?php
+                            endforeach;
+                        }
 
-                            ?>
+                        ?>
 
                     </tbody>
                 </table>
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <?php
+                        if ($page <= 1) :
+                        ?>
+                            <li class="page-item disabled">
+                                <a class="page-link">Previous</a>
+                            </li>
+                        <?php
+                        else :
+                        ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?php echo (int)$page - 1 ?>">Previous</a>
+                            </li>
+                        <?php
+                        endif;
+                        ?>
+                        <!-- ............................................. -->
+                        <?php
+
+                        if($page > 5){
+                        ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1">1</a>
+                            </li>
+                            <li class="page-item disabled">
+                                <a class="page-link">...</a>
+                            </li>
+                        <?php
+                        }
+                        ?>
+                        <!-- .............................................. -->
+                        <?php
+                        // Check pagination
+                        
+
+                        if ($num_page >= 9) {
+                            if ($page <= 5) {
+                                $num_start = 1;
+                                $num_stop = 9;
+                            } elseif ($page > $num_page-4) {
+                                $num_start = $num_page-8;
+                                $num_stop = $num_page;
+                            } else {
+                                $num_start = $page-4;
+                                $num_stop = $page+4;
+                            }
+                        } else {
+                            $num_start = 1;
+                            $num_stop = $num_page;
+                        }
+
+                        for ($i = $num_start; $i <= $num_stop; $i++) :
+                            if ($page == $i) :
+                        ?>
+
+
+                                <li class="page-item">
+                                    <a class="page-link active" aria-current="page" href="?page=<?php echo $i; ?>"><?php echo $i;  ?></a>
+                                </li>
+                            <?php
+                            else :
+                            ?>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i;  ?></a>
+                                </li>
+                            <?php
+
+                            endif;
+
+                            ?>
+                        <?php endfor; ?>
+                        <!-- ............................................. -->
+                        <?php
+
+                        if ($page < $num_page - 5) :
+                        ?>
+                            <li class="page-item disabled">
+                                <a class="page-link">...</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $num_page ?>"><?= $num_page ?></a>
+                            </li>
+
+                        <?php
+                        endif;
+                        ?>
+                        <!-- .............................................. -->
+                        <?php
+                        if ($page >= $num_page) :
+                        ?>
+                            <li class="page-item disabled">
+                                <a class="page-link">Next</a>
+                            </li>
+                        <?php
+                        else :
+                        ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?php echo (int)$page + 1 ?>">Next</a>
+                            </li>
+                        <?php
+                        endif;
+                        ?>
+                </nav>
             </div>
         </div>
     </div>
